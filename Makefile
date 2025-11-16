@@ -1,4 +1,4 @@
-all: dep_check bsp sqlux femto8 loader hex sdcard
+all: dep_check bsp sqlux femto8 loader sdcard
 
 .PHONY: dep_check
 dep_check:
@@ -17,18 +17,12 @@ sqlux:
 
 .PHONY: femto8
 femto8:
-	$(MAKE) -C femto8-nextp8 -f Makefile.nextp8 NEXTP8_BSP=$(CURDIR)/nextp8-bsp clean all
+	$(MAKE) -C femto8-nextp8 NEXTP8_BSP=$(CURDIR)/nextp8-bsp PLATFORM=nextp8 clean all
 
 .PHONY: loader
 loader:
-	$(MAKE) -C loader NEXTP8_BSP=$(CURDIR)/nextp8-bsp clean all
-
-.PHONY: hex
-hex: loader.mem
-	
-loader.mem: loader.bin
-	od -v -w2 -Ax -tx2 --endian=big $< | cut -d' ' -f2 -s >$@
+	$(MAKE) -C nextp8-loader NEXTP8_BSP=$(CURDIR)/nextp8-bsp clean all
 
 .PHONY: sdcard
 sdcard:
-	cd sQLux-nextp8 && ../nextp8-dev/make-sdcard.sh
+	cd sQLux-nextp8 && ../make-sdcard.sh
