@@ -25,4 +25,4 @@ loader:
 
 .PHONY: sdcard
 sdcard:
-	cd sQLux-nextp8 && ../make-sdcard.sh
+	cd sQLux-nextp8 && ../scripts/make-sdcard.sh
