@@ -8,6 +8,7 @@ mkdir -p "${DESTDIR}/machines/nextp8/carts"
 mkdir -p "${DESTDIR}/machines/nextp8/cartdata"
 cp nextp8-loader/build/loader.bin "${DESTDIR}"/machines/nextp8/
 cp femto8-nextp8/build-nextp8/femto8.bin "${DESTDIR}"/machines/nextp8/nextp8.bin
+cp femto8-nextp8/carts/welcome.p8 "${DESTDIR}"/machines/nextp8/carts/welcome.p8
 cp -r nextp8/machines/nextp8/core.cfg "${DESTDIR}"/machines/nextp8/
 if [ "$2" != "--no-bitstream" ]; then
     cp nextp8-core/nextp8.runs/impl_1/nextp8.bit "${DESTDIR}"/machines/nextp8/core3.bit
