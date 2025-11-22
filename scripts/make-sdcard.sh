@@ -1,13 +1,19 @@
 #!/bin/sh
+scriptdir="$(dirname "$0")"
+zipfile="$(mktemp --suffix=.zip)"
+mountpoint="$(mktemp -d)"
+"${scriptdir}"/make-release.sh "${zipfile}" --no-bitstream
+ls "${zipfile}"
 dd if=/dev/zero of=sdcard.img bs=1024 count=8192
 mkfs.vfat sdcard.img
-mkdir -p /tmp/sdcard
-sudo mount -o loop,uid=${LOGNAME} sdcard.img /tmp/sdcard
-oldpwd=${PWD}
-mkdir -p /tmp/sdcard/machines/nextp8/carts
-cp ../femto8-nextp8/carts/*.p8 /tmp/sdcard/machines/nextp8/carts/
-cp ../nextp8-loader/build/loader.bin /tmp/sdcard/machines/nextp8/
-cp ../femto8-nextp8/build-nextp8/femto8.bin /tmp/sdcard/machines/nextp8/nextp8.bin
-cp -r ../nextp8/machines/nextp8/core.cfg /tmp/sdcard/machines/nextp8/
-cd ${oldpwd}
-sudo umount /tmp/sdcard
+mkdir -p "${mountpoint}"
+sudo mount -o loop,uid="${LOGNAME}" sdcard.img "${mountpoint}"
+abszipfile="$(readlink -f "${zipfile}")"
+oldpwd="${PWD}"
+cd "${mountpoint}"
+unzip "${zipfile}"
+cd "${oldpwd}"
+cp femto8-nextp8/carts/*.p8 "${mountpoint}"/machines/nextp8/carts/
+sudo umount "${mountpoint}"
+rm "${zipfile}"
+rmdir "${mountpoint}"
