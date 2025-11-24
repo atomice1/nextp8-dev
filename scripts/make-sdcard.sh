@@ -1,5 +1,6 @@
 #!/bin/sh
 scriptdir="$(dirname "$0")"
+basedir="$(dirname "${scriptdir}")"
 zipfile="$(mktemp --suffix=.zip)"
 mountpoint="$(mktemp -d)"
 "${scriptdir}"/make-release.sh "${zipfile}" --no-bitstream
@@ -13,7 +14,7 @@ oldpwd="${PWD}"
 cd "${mountpoint}"
 unzip "${zipfile}"
 cd "${oldpwd}"
-cp femto8-nextp8/carts/*.p8 "${mountpoint}"/machines/nextp8/carts/
+cp "${basedir}"/femto8-nextp8/carts/*.p8 "${mountpoint}"/machines/nextp8/carts/
 sudo umount "${mountpoint}"
 rm "${zipfile}"
 rmdir "${mountpoint}"

@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import os
 import re
 import struct
 import subprocess
@@ -16,8 +17,10 @@ def decode_timestamp(timestamp):
 def make_version(kv):
     return str(kv['MAJOR_VERSION']) + '_' + str(kv['MINOR_VERSION']) + '_' + str(kv['PATCH_VERSION'])
 
+basedir = os.path.dirname(os.path.dirname(sys.argv[0]))
+
 parameters = {}
-with open('nextp8-core/nextp8.srcs/sources_1/nextp8_top.v') as f:
+with open(f'{basedir}/nextp8-core/nextp8.srcs/sources_1/nextp8_top.v') as f:
     for line in f:
         line = line.strip()
         if 'parameter' in line and 'VERSION' in line and not '{' in line:
@@ -30,7 +33,7 @@ with open('nextp8-core/nextp8.srcs/sources_1/nextp8_top.v') as f:
             parameters[name] = value
 hw_version = make_version(parameters)
 hw_timestamp = None
-with open('nextp8-core/nextp8.runs/impl_1/nextp8.bit', "rb") as f:
+with open(f'{basedir}/nextp8-core/nextp8.runs/impl_1/nextp8.bit', "rb") as f:
     bs = f.read(4)
     while True:
         c = f.read(1)
@@ -45,7 +48,7 @@ with open('nextp8-core/nextp8.runs/impl_1/nextp8.bit', "rb") as f:
 if hw_timestamp:
     hw_timestamp = decode_timestamp(hw_timestamp)
 defines = {}
-with open('femto8-nextp8/src/main.c') as f:
+with open(f'{basedir}/femto8-nextp8/src/main.c') as f:
     for line in f:
         line = line.strip()
         if 'define' in line and 'VERSION' in line:
@@ -57,7 +60,7 @@ with open('femto8-nextp8/src/main.c') as f:
             value = int(matches.group(2))
             defines[name] = value
 sw_version = make_version(defines)
-with subprocess.Popen(['gdb-multiarch', 'femto8-nextp8/build-nextp8/femto8', '-quiet', '-ex', "print femto8_timestamp", '-ex', "quit"], stdout=subprocess.PIPE, encoding='utf-8') as p:
+with subprocess.Popen(['gdb-multiarch', f'{basedir}/femto8-nextp8/build-nextp8/femto8', '-quiet', '-ex', "print femto8_timestamp", '-ex', "quit"], stdout=subprocess.PIPE, encoding='utf-8') as p:
     for line in p.stdout:
         line = line.strip()
         if line.startswith('$1'):
