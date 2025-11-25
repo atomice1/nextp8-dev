@@ -1,6 +1,6 @@
 #!/bin/sh
 scriptdir="$(dirname "$0")"
-basedir="$(dirname "${scriptdir}")"
+basedir="${scriptdir}"/..
 zipfile="$(mktemp --suffix=.zip)"
 mountpoint="$(mktemp -d)"
 "${scriptdir}"/make-release.sh "${zipfile}" --no-bitstream

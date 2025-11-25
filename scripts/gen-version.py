@@ -17,7 +17,7 @@ def decode_timestamp(timestamp):
 def make_version(kv):
     return str(kv['MAJOR_VERSION']) + '_' + str(kv['MINOR_VERSION']) + '_' + str(kv['PATCH_VERSION'])
 
-basedir = os.path.dirname(os.path.dirname(sys.argv[0]))
+basedir = os.path.dirname(sys.argv[0]) + "/.."
 
 parameters = {}
 with open(f'{basedir}/nextp8-core/nextp8.srcs/sources_1/nextp8_top.v') as f:
@@ -33,20 +33,23 @@ with open(f'{basedir}/nextp8-core/nextp8.srcs/sources_1/nextp8_top.v') as f:
             parameters[name] = value
 hw_version = make_version(parameters)
 hw_timestamp = None
-with open(f'{basedir}/nextp8-core/nextp8.runs/impl_1/nextp8.bit', "rb") as f:
-    bs = f.read(4)
-    while True:
-        c = f.read(1)
-        if len(c) == 0:
-            break
-        bs = bs[1:] + c
-        word = struct.unpack('>I', bs)[0]
-        if word == 0x3001A001:
-            bs = f.read(4)
-            hw_timestamp = struct.unpack('>I', bs)[0]
-            break
-if hw_timestamp:
-    hw_timestamp = decode_timestamp(hw_timestamp)
+if os.path.exists(f'{basedir}/nextp8-core/nextp8.runs/impl_1/nextp8.bit'):
+    with open(f'{basedir}/nextp8-core/nextp8.runs/impl_1/nextp8.bit', "rb") as f:
+        bs = f.read(4)
+        while True:
+            c = f.read(1)
+            if len(c) == 0:
+                break
+            bs = bs[1:] + c
+            word = struct.unpack('>I', bs)[0]
+            if word == 0x3001A001:
+                bs = f.read(4)
+                hw_timestamp = struct.unpack('>I', bs)[0]
+                break
+    if hw_timestamp:
+        hw_timestamp = decode_timestamp(hw_timestamp)
+else:
+    hw_timestamp = None
 defines = {}
 with open(f'{basedir}/femto8-nextp8/src/main.c') as f:
     for line in f:
@@ -71,4 +74,7 @@ with subprocess.Popen(['gdb-multiarch', f'{basedir}/femto8-nextp8/build-nextp8/f
             sw_timestamp = int(matches.group(1))
 if sw_timestamp:
     sw_timestamp = decode_timestamp(sw_timestamp)
-print(f'hw_{hw_version}_{hw_timestamp}_sw_{sw_version}_{sw_timestamp}')
+if hw_timestamp:
+    print(f'hw_{hw_version}_{hw_timestamp}_sw_{sw_version}_{sw_timestamp}')
+else:
+    print(f'hw_{hw_version}_sw_{sw_version}_{sw_timestamp}')
