@@ -54,7 +54,7 @@ defines = {}
 with open(f'{basedir}/femto8-nextp8/src/main.c') as f:
     for line in f:
         line = line.strip()
-        if 'define' in line and 'VERSION' in line:
+        if 'define' in line and 'VERSION' in line and not '"' in line:
             matches = re.match("#define +([A-Z_]+_VERSION) *([0-9][0-9]*)", line)
             if not matches:
                 print(f"Parse error: {line}", file=sys.stderr)
