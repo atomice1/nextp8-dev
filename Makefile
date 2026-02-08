@@ -13,7 +13,7 @@ bsp: dep_check
 
 .PHONY: sqlux
 sqlux:
-	$(MAKE) -C sQLux-nextp8
+	$(MAKE) -C sQLux-nextp8 NEXTP8_BSP=$(CURDIR)/nextp8-bsp
 
 .PHONY: femto8
 femto8: dep_check bsp
@@ -29,7 +29,7 @@ release: femto8 loader
 
 .PHONY: sdcard
 sdcard: venv release
-	. venv/bin/activate &&  ./scripts/make-sdcard.py --output sQLux-nextp8/sdcard.img --release-zip nextp8_"$$(python3 scripts/gen-version.py)".zip
+	. venv/bin/activate &&  ./scripts/make-sdcard.py --output sQLux-nextp8/sdcard.img --release-zip nextp8_"$$(python3 scripts/gen-version.py)".zip --cart-dir femto8-nextp8/carts
 
 venv:
 	python3 -m venv venv
