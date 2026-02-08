@@ -21,6 +21,7 @@ Options:
 """
 
 import argparse
+import itertools
 import os
 import shutil
 import subprocess
@@ -245,7 +246,7 @@ def copy_carts_to_fat(fs, cart_dirs):
             print(f"Warning: Not a directory: {cart_dir}", file=sys.stderr)
             continue
 
-        for cart_file in cart_dir_path.glob("*.p8"):
+        for cart_file in itertools.chain(cart_dir_path.glob("*.p8"), cart_dir_path.glob("*.p8.png")):
             dest_file = f"{carts_path}/{cart_file.name}"
 
             try:

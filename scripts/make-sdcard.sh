@@ -14,7 +14,7 @@ oldpwd="${PWD}"
 cd "${mountpoint}"
 unzip "${zipfile}"
 cd "${oldpwd}"
-cp "${basedir}"/femto8-nextp8/carts/*.p8 "${mountpoint}"/machines/nextp8/carts/
+cp "${basedir}"/femto8-nextp8/carts/*.p8 "${basedir}"/femto8-nextp8/carts/*.p8.png "${mountpoint}"/machines/nextp8/carts/
 sudo umount "${mountpoint}"
 rm "${zipfile}"
 rmdir "${mountpoint}"
