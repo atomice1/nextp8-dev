@@ -33,4 +33,5 @@ sdcard: venv release
 
 venv:
 	python3 -m venv venv
+	python3 -m pip install setuptools==81
 	python3 -m pip install -r scripts/requirements.txt
