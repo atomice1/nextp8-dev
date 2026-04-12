@@ -18,7 +18,7 @@ cp "${basedir}"/nextp8/docs/licences/*NOTICES* "${DESTDIR}"/machines/nextp8/lice
 cp "${basedir}"/nextp8/docs/licences/gpl-3.0.txt "${DESTDIR}"/machines/nextp8/licences/
 cp "${basedir}"/nextp8/docs/licences/apache-2.0.txt "${DESTDIR}"/machines/nextp8/licences/
 if [ "$2" != "--no-bitstream" ]; then
-    cp "${basedir}"/nextp8-core/nextp8.runs/impl_1/nextp8.bit "${DESTDIR}"/machines/nextp8/core3.bit
+    cp "${basedir}"/nextp8-core/nextp8-issue5.runs/impl_1/nextp8_top_issue5.bit "${DESTDIR}"/machines/nextp8/core3.bit
 fi
 abszipfile="$(readlink -f "${zipfile}")"
 oldpwd="${PWD}"

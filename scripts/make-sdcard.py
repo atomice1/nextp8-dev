@@ -196,6 +196,12 @@ def extract_zip_to_fat(fs, zip_path):
     with zipfile.ZipFile(zip_path, 'r') as zf:
         for member in zf.namelist():
             if member.endswith('/'):
+                # Create the directory entry (needed for empty dirs like dev/)
+                dir_path = member.rstrip('/')
+                try:
+                    fs.makedirs(dir_path, recreate=True)
+                except:
+                    pass
                 continue
 
             parts = member.split('/')
@@ -246,7 +252,7 @@ def copy_carts_to_fat(fs, cart_dirs):
             print(f"Warning: Not a directory: {cart_dir}", file=sys.stderr)
             continue
 
-        for cart_file in itertools.chain(cart_dir_path.glob("*.p8"), cart_dir_path.glob("*.p8.png")):
+        for cart_file in itertools.chain(cart_dir_path.glob("*.p8"), cart_dir_path.glob("*.p8.png"), cart_dir_path.glob("*.lua")):
             dest_file = f"{carts_path}/{cart_file.name}"
 
             try:
@@ -293,7 +299,7 @@ def calculate_required_size(zip_path, cart_dirs):
                     if cart_file.is_file():
                         total_bytes += cart_file.stat().st_size
 
-    size_mb = (total_bytes * 1.1) / (1024 * 1024)
+    size_mb = (total_bytes * 2.0) / (1024 * 1024)
 
     size_mb = max(2, int(size_mb + 0.999))
 
