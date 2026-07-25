@@ -29,7 +29,7 @@ release: femto8 loader
 
 .PHONY: sdcard
 sdcard: venv release
-	. venv/bin/activate &&  ./scripts/make-sdcard.py --output sQLux-nextp8/sdcard.img --release-zip nextp8_"$$(python3 scripts/gen-version.py)".zip --cart-dir carts --cart-dir femto8-nextp8/carts --cart-dir femto8-nextp8/tests
+	. venv/bin/activate &&  ./scripts/make-sdcard.py --output sQLux-nextp8/sdcard.img --release-zip nextp8_"$$(python3 scripts/gen-version.py)".zip --cart-dir carts --cart-dir femto8-nextp8/carts --cart-dir femto8-nextp8/tests/regression --cart-dir femto8-nextp8/tests/long-running --cart-dir femto8-nextp8/tests/interactive
 
 venv:
 	python3 -m venv venv
