@@ -295,7 +295,11 @@ def calculate_required_size(zip_path, cart_dirs):
         for cart_dir in cart_dirs:
             cart_dir_path = Path(cart_dir)
             if cart_dir_path.exists() and cart_dir_path.is_dir():
-                for cart_file in cart_dir_path.glob("*.p8"):
+                for cart_file in itertools.chain(
+                    cart_dir_path.glob("*.p8"),
+                    cart_dir_path.glob("*.p8.png"),
+                    cart_dir_path.glob("*.lua")
+                ):
                     if cart_file.is_file():
                         total_bytes += cart_file.stat().st_size
 
