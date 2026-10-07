@@ -64,7 +64,7 @@ with open(f'{basedir}/femto8-nextp8/src/main.c') as f:
             defines[name] = value
 sw_version = make_version(defines)
 sw_timestamp = None
-with subprocess.Popen(['gdb-multiarch', f'{basedir}/femto8-nextp8/build-nextp8/femto8', '-quiet', '-ex', "print femto8_timestamp", '-ex', "quit"], stdout=subprocess.PIPE, encoding='utf-8') as p:
+with subprocess.Popen(['gdb-multiarch', f'{basedir}/femto8-nextp8/build-nextp8/femto8', '-quiet', '-ex', 'print nextp8_timestamp', '-ex', "quit"], stdout=subprocess.PIPE, encoding='utf-8') as p:
     for line in p.stdout:
         line = line.strip()
         if line.startswith('$1'):
