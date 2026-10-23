@@ -94,6 +94,15 @@ UG_DIR="${DESTDIR}/nextp8/user_guide"
 mkdir -p "${UG_DIR}"
 UG_SRC="${basedir}/nextp8/docs/ug"
 if [ -d "${UG_SRC}" ]; then
+    # Convert compatibility.md to HTML (it's in the parent docs directory)
+    COMPAT_SRC="${basedir}/nextp8/docs/compatibility.md"
+    if [ -f "${COMPAT_SRC}" ]; then
+        pandoc "${COMPAT_SRC}" -f gfm -t html5 -s -o "${UG_DIR}/compatibility.html" \
+            --metadata title="nextp8 User Guide: Compatibility" \
+            --highlight-style pygments
+        echo "  Built: compatibility.html"
+    fi
+
     # Convert each markdown file to HTML
     for md_file in "${UG_SRC}"/*.md; do
         if [ -f "$md_file" ]; then
@@ -104,6 +113,20 @@ if [ -d "${UG_SRC}" ]; then
                 --metadata title="nextp8 User Guide: ${base_name}" \
                 --highlight-style pygments
             echo "  Built: ${base_name}.html"
+        fi
+    done
+
+    # Fix links: convert .md links to .html in all generated HTML files
+    for html_file in "${UG_DIR}"/*.html; do
+        if [ -f "$html_file" ]; then
+            # Convert href="file.md" to href="file.html" and href="../compatibility.md" to href="compatibility.html"
+            if command -v perl >/dev/null 2>&1; then
+                perl -i -pe 's/href="([^"]*)\.md"/href="\1.html"/g; s/href="\.\.\/compatibility\.html"/href="compatibility.html"/g' "$html_file"
+            else
+                sed -i 's/href="\([^"]*\)\.md"/href="\1.html"/g' "$html_file"
+                sed -i 's/href="\.\.\/compatibility\.md"/href="compatibility.html"/g' "$html_file"
+            fi
+            echo "  Fixed links in: $(basename $html_file)"
         fi
     done
 else
