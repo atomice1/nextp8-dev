@@ -25,7 +25,7 @@ loader: dep_check bsp
 
 .PHONY: release
 release: femto8 loader
-	./scripts/make-release.sh nextp8_"$$(python3 scripts/gen-version.py)".zip
+	./scripts/make-release.sh nextp8_"$$(python3 scripts/gen-version.py)".zip --no-bitstream
 
 .PHONY: sdcard
 sdcard: venv release
