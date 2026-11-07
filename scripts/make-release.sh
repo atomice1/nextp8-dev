@@ -17,12 +17,14 @@ cp "${basedir}"/femto8-nextp8/carts/welcome.p8 "${DESTDIR}"/machines/nextp8/cart
 cp "${basedir}"/femto8-nextp8/carts/snake.p8 "${DESTDIR}"/machines/nextp8/carts/snake.p8
 cp "${basedir}"/femto8-nextp8/carts/bricks.p8 "${DESTDIR}"/machines/nextp8/carts/bricks.p8
 cp "${basedir}"/nextp8/machines/nextp8/core.cfg "${DESTDIR}"/machines/nextp8/
+cp "${basedir}"/nextp8/machines/nextp8/core.nxi "${DESTDIR}"/machines/nextp8/
 cp "${basedir}"/nextp8/docs/QUICKSTART.txt "${DESTDIR}"/docs/extracores/nextp8.txt
 grep -A 10000 '^\(Licenses\|Licences\)' "${basedir}"/nextp8/docs/download.md >"${DESTDIR}"/docs/licenses/nextp8-license.md
 cp "${basedir}"/nextp8/docs/licences/*NOTICES* "${DESTDIR}"/docs/licenses/nextp8
 cp "${basedir}"/nextp8/docs/licences/gpl-3.0.txt "${DESTDIR}"/docs/licenses/nextp8
 cp "${basedir}"/nextp8/docs/licences/apache-2.0.txt "${DESTDIR}"/docs/licenses/nextp8
 if [ "$2" != "--no-bitstream" ]; then
+    cp "${basedir}"/nextp8-core/nextp8-issue5.runs/impl_1/nextp8_top_issue5.bit "${DESTDIR}"/machines/nextp8/core.bit
     cp "${basedir}"/nextp8-core/nextp8-issue5.runs/impl_1/nextp8_top_issue5.bit "${DESTDIR}"/machines/nextp8/core3.bit
 fi
 "${scriptdir}/md_to_nextguide.py" "${basedir}"/nextp8/docs/ug "${DESTDIR}"/docs/guides/nextp8.gde
