@@ -16,6 +16,7 @@ cp "${basedir}"/femto8-nextp8/build-nextp8/femto8.bin "${DESTDIR}"/machines/next
 cp "${basedir}"/femto8-nextp8/carts/welcome.p8 "${DESTDIR}"/machines/nextp8/carts/welcome.p8
 cp "${basedir}"/femto8-nextp8/carts/snake.p8 "${DESTDIR}"/machines/nextp8/carts/snake.p8
 cp "${basedir}"/femto8-nextp8/carts/bricks.p8 "${DESTDIR}"/machines/nextp8/carts/bricks.p8
+cp "${basedir}"/femto8-nextp8/carts/runner.p8 "${DESTDIR}"/machines/nextp8/carts/runner.p8
 cp "${basedir}"/nextp8/machines/nextp8/core.cfg "${DESTDIR}"/machines/nextp8/
 cp "${basedir}"/nextp8/machines/nextp8/core.nxi "${DESTDIR}"/machines/nextp8/
 cp "${basedir}"/nextp8/docs/QUICKSTART.txt "${DESTDIR}"/docs/extracores/nextp8.txt
